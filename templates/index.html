@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深度学习模型安全性检测</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+  <!-- <link rel="stylesheet" type="text/css" href="../static/index.css"> -->
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <!-- <script type="text/javascript" src="../static/index.js"></script> -->
+   <!-- 新增资源引入 -->
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/core@1.2.0/dist/css/tabler.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+    :root {
+      --tblr-font-sans-serif: "‌‌Open Sans‌";
+    }
+  </style>
+  <style>
+    :root {
+      --tblr-primary: #1e1af3;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar navbar-expand-md d-print-none">
+					<div class="container-xl">
+					  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+						data-bs-target="#navbar-menu" aria-controls="navbar-menu"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					  </button>
+					  <!-- BEGIN NAVBAR LOGO -->
+					<a href="/" class="navbar-brand navbar-brand-autodark me-3">
+					<img src="../static/css/images/logo.png" 
+						 class="navbar-brand-image" 
+						 width="110" 
+						 height="32" 
+						 alt="Logo">
+					</a>
+				  <!-- END NAVBAR LOGO -->
+					  <ul class="navbar-nav">
+						<li class="nav-item">
+						  <a class="nav-link" href="home">
+							<span class="nav-link-icon">
+							  <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+							  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="icon icon-1">
+								<path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+								<path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+								<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+							  </svg>
+							</span>
+							<span class="nav-link-title"> 主页 </span>
+						  </a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="llmindex">
+							<span
+							  class="nav-link-icon"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+							  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="icon icon-1">
+								<path d="M9 11l3 3l8 -8" />
+								<path
+								  d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+							  </svg>
+							</span>
+							<span class="nav-link-title"> 大语言模型安全评测 </span>
+						  </a>
+						</li>
+						<li class="nav-item active">
+						  <a class="nav-link" href="index">
+							<span
+							  class="nav-link-icon"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+							  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="icon icon-1">
+								<path d="M9 11l3 3l8 -8" />
+								<path
+								  d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+							  </svg>
+							</span>
+							<span class="nav-link-title active"> 深度学习模型安全评测 </span>
+						  </a>
+						</li>
+					  </ul>
+					  <div class="navbar-nav flex-row order-md-last ms-auto">
+						<div class="nav-item">
+							<!-- 移除 data-bs-toggle 属性，添加 href 链接 -->
+							<a href="login.html" class="nav-link d-flex lh-1 text-reset" aria-label="登录">
+								
+								<div class="d-none d-xl-block ps-2">
+									<div>登录</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					  </div>
+					</div>
+				  </header>
+  <div class="top-container">
+    <div class="top-left">
+      <li class="top-left-li" style="list-style-type:none">  
+        <button id="tlb1" onclick="openFileManager()">选择模型</button>
+        <input type="file" id="file-input" style="display: none;">
+        <span id="model">Resnet-152</span>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="device">device</label>
+        <select id="device">
+          <!-- <option value="" selected disabled hidden>参数指定</option> -->
+          <option>CPU</option>
+          <option selected>CUDA</option>     
+        </select>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="batch_size">batch_size</label>
+        <input type="range" id="batch_size" name="score" min="1" max="100" value="50">
+        <span id="batch_size_value">50</span>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="bd_method">backdoor_method</label>
+        <select id="bd_method">
+          <option selected >NeuralCleanse</option>
+          <option>DeepInspect</option>
+          <option>NeuralCleanse</option>     
+        </select>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="epoch">poison_epoch</label>
+        <input type="range" id="epoch" name="epoch" min="1" max="100" value="30">
+        <span id="epoch_value">30</span>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="bsize">poison_batch_size</label>
+        <select id="bsize">
+          <!-- <option value="" selected disabled hidden>参数指定</option> -->
+          <option>128</option>
+          <option>256</option>     
+          <option selected>512</option>
+        </select>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="pmethod">poison_method</label>
+        <select id="pmethod">
+          <!-- <option value="" selected disabled hidden>参数指定</option> -->
+          <option selected>poison-frogs</option>
+          <option>gradient-matching</option>     
+        </select>
+      </li>
+      <li class="top-left-li" style="list-style-type:none">
+        <label for="dataset">dataset</label>
+        <select id="dataset">
+          <!-- <option value="" selected disabled hidden>参数指定</option> -->
+          <option selected>Mnist</option>
+          <option>CIFAR10</option>     
+          <option>CIFAR100</option>
+        </select>
+      </li>
+      <li id="start"style="list-style-type:none">
+        <button id="tlb2" onclick="start_detect()">开始检测</button>
+      </li>
+    </div>
+    <div class="top-center">
+      <div id="ratio-container">
+        <!-- 波浪装饰 -->
+        <div class="deco-wave"></div>
+        
+        <!-- 环形进度 -->
+        <div class="progress-ring">
+          <svg width="240" height="240">
+            <circle cx="120" cy="120" r="110" fill="none" stroke="#eee" stroke-width="8"/>
+            <circle class="progress-circle" cx="120" cy="120" r="110" fill="none" 
+                    stroke="#2196f3" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <div class="metric-value">85%</div>
+            <div class="metric-label">检测进度</div>
+          </div>
+        </div>
+    
+        <!-- 实时指标 -->
+        <div class="metric-card">
+          <span class="metric-label">当前耗时</span>
+          <span class="metric-value">2m 36s</span>
+        </div>
+        
+        <div class="metric-card">
+          <span class="metric-label">资源占用</span>
+          <span class="metric-value">32%</span>
+        </div>
+      </div>
+    </div>
+    <div class="top-right">
+      <!-- <span class="sub-title">评测结果</span> -->
+      <table id="result_table">
+        <tr>
+          <th>指标</th>
+          <th>结果</th>
+          <th>指标</th>
+          <th>结果</th>
+        </tr>
+        <tr>
+          <td>CACC</td>
+          <td class="value" id="CACC">--</td>
+          <td>ASR</td>
+          <td class="value" id="ASR">--</td>
+        </tr>
+        <tr>
+          <td>MR<sub>TA</sub></td>
+          <td class="value" id="MRTA">--</td>
+          <td>ACAC</td>
+          <td class="value" id="ACAC">--</td>
+        </tr>
+        <tr>
+          <td>ACTC</td>
+          <td class="value" id="ACTC">--</td>
+          <td>NTE</td>
+          <td class="value" id="NTE">--</td>
+        </tr>
+        <tr>
+          <td>ALD<sub>p</sub></td>
+          <td class="value" id="ALD">--</td>
+          <td>AQT</td>
+          <td class="value" id="AQT">--</td>
+        </tr>
+        <tr>
+          <td>CCV</td>
+          <td class="value" id="CCV">--</td>
+          <td>CAV</td>
+          <td class="value" id="CAV">--</td>
+        </tr>
+        <tr>
+          <td>COS</td>
+          <td class="value" id="COS">--</td>
+          <td>RGB</td>
+          <td class="value" id="RGB">--</td>
+        </tr>
+        <tr>
+          <td>RIC</td>
+          <td class="value" id="RIC">--</td>
+          <td>T<sub>std</sub></td>
+          <td class="value" id="TSTD">--</td>
+        </tr>
+        <tr>
+          <td>T<sub>size</sub></td>
+          <td class="value" id="TSIZE">--</td>
+          <td>CC</td>
+          <td class="value" id="CC">--</td>
+        </tr>
+      </table>
+    <button id="report" onclick="report()">生成模型评测报告</button>
+  </div>
+  </div>
+  <div class="bottom-container">
+    <div class="box">
+      <img class="picture" id="pic4" src="{{ url_for('static', filename='4.png') }}" alt="Image 1">
+      <p class="process">对抗样本攻击测试</p>
+    </div>
+    <div class="suploading" id="suploading1">
+    <div class="loading" id="loading1">   
+      <span class="girl"></span>
+      <div class="boys">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    </div>
+    <div class="box">
+      <img class="picture" src="{{ url_for('static', filename='2.png') }}" alt="Image 2">
+      <p class="process">后门检测与防御</p>
+    </div>
+    <div class="suploading" id="suploading2">
+    <div class="loading" id="loading2">
+      <span class="girl"></span>
+      <div class="boys">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      </div>
+    </div>
+    <div class="box">
+      <img class="picture" src="{{ url_for('static', filename='1.png') }}" alt="Image 3">
+      <p class="process">数据投毒检测</p>
+    </div>
+    <div class="suploading" id="suploading3">
+    <div class="loading" id="loading3">
+      <span class="girl"></span>
+      <div class="boys">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    </div>
+    <div class="box" id="box4">
+      <img class="picture" src="{{ url_for('static', filename='3.png') }}" alt="Image 4">
+      <p class="process">指标计算</p>
+    </div>
+  </div>
+
+</body>
+</html>

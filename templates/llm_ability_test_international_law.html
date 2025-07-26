@@ -1,0 +1,666 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Photon by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css" />
+		<script type="text/javascript" src="{{ url_for('static', filename='llmindex.js') }}"></script>
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+		<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/core@1.2.0/dist/css/tabler.min.css" />
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+ <style>
+  :root {
+    --tblr-font-sans-serif: "‌‌Open Sans‌";
+  }
+</style>
+<style>
+  :root {
+    --tblr-primary: #1e1af3;
+  }
+		<script>
+
+        // 使用 JavaScript 在页面加载时设置值
+        document.addEventListener("DOMContentLoaded", function() {
+            // 从后端传递的 JSON 数据中获取值
+            const result = {{ result|tojson }};
+
+            // 填写用户之前输出的值
+			if (result.model){
+				// 获取所有单选按钮
+				var radioButtons = document.querySelectorAll('input[name="module_choose"]');
+
+				// 遍历单选按钮，找到匹配的值
+				radioButtons.forEach(function(radio) {
+					if (radio.value === result.model) {
+						radio.checked = true; // 设置为选中状态
+					}
+				});
+				document.getElementById('prompt_choose').value = result.select_prompt;
+				var promptChoice = result.select_prompt; // 获取选中的问题类型
+				var templateChoose = document.getElementById('template_choose'); // 获取第二个下拉框
+				console.log(promptChoice)
+				// 清空第二个下拉框的内容
+				templateChoose.innerHTML = '';
+
+				// 根据选择的类型动态生成选项
+				var options = [];
+				var correctAnswer = ''
+
+				if (promptChoice === '引渡的罪名特定原则是指') {
+					options = [
+						'A 只能根据国际公约规定的特定罪名要求引渡',
+						'B 前南刑事法庭只能审理特定罪名的刑事案件',
+						'C 请求引渡国只能就其请求引渡时的特定罪名对犯罪嫌疑人加以审判和处罚',
+						'D 法院只能审理特定罪名的刑事案件'
+					];
+					correctAnswer = 'C 请求引渡国只能就其请求引渡时的特定罪名对犯罪嫌疑人加以审判和处罚'
+				} else if (promptChoice === "根据1969年修订的1954年《国际防止海上油污公约》的规定，禁排区是") {
+					options = [
+						'A 距海岸50海里以内海域',
+						'B 所有海域',
+						'C 距海岸100海里以内海域',
+						'D 距海岸150海里以内海域'
+					];
+					correctAnswer = 'B 所有海域'
+				} else if (promptChoice === "在下列各种法律选择方法中，要求直接就国际司法关系所涉及的国家的实体规范作出选择的方法是是") {
+					options = [
+						'A 依最密切联系原则决定法律的选择',
+						'B 依法律关系的性质决定法律的选择',
+						'C 依利益分析或依应得的结果决定法律的选择',
+						'D 依当事人意思自治决定法律的选择'
+					];
+					correctAnswer = 'C 依利益分析或依应得的结果决定法律的选择'
+				}
+				else if (promptChoice === '用冲突规范调整涉外民事关系，其方法属于') {
+					options = [
+						'A 直接调整',
+						'B 间接调整',
+						'C 自然调整',
+						'D 混合调整'
+					];
+					correctAnswer = 'B 间接调整'
+				}
+				else if (promptChoice === '将票据法编入债务法典内，作为债务法的一部分内容的国家是') {
+					options = [
+						'A 日本',
+						'B 英国',
+						'C 瑞士',
+						'D 德国'
+					];
+					correctAnswer = 'C 瑞士'
+				}
+				else if (promptChoice === '在物权关系的法律适用上，主张不分动产和不动产一律适用物之所在地法是从') {
+					options = [
+						'A 19世纪开始的',
+						'B 18世纪开始的',
+						'C 13、14世纪开始的',
+						'D 17世纪开始的'
+					];
+					correctAnswer = 'A 19世纪开始的'
+				}
+				else if (promptChoice === '有权依据人大常委决定批准我国同外国缔结的条约和重要协定的是') {
+					options = [
+						'A GATT',
+						'B TRIMs',
+						'C TRIPs',
+						'D GATS'
+					];
+					correctAnswer = 'D GATS'
+				}
+				else if (promptChoice === 'WTO调整国际服务贸易的协定是') {
+					options = [
+						'A 19世纪开始的',
+						'B 18世纪开始的',
+						'C 13、14世纪开始的',
+						'D 17世纪开始的'
+					];
+					correctAnswer = 'A 19世纪开始的'
+				}
+				else if (promptChoice === '下列各项，属于国际司法基本原则的是') {
+					options = [
+						'A 保护弱方当事人合法权益的原则',
+						'B 意思自治原则',
+						'C 最惠国待遇',
+						'D 非歧视原则'
+					];
+					correctAnswer = 'A 保护弱方当事人合法权益的原则'
+				} else if (promptChoice === '国家区别于其他非国家政治实体的根本要素是') {
+					options = [
+						'A 定居的居民',
+						'B 享有主权',
+						'C 确定的领土',
+						'D 政权组织'
+					];
+					correctAnswer = 'B 享有主权'
+				}
+
+				// 将生成的选项添加到第二个下拉框中
+				options.forEach(function(optionText) {
+					var div = document.createElement('div');
+					div.textContent = optionText;
+					if (optionText === correctAnswer) {
+						div.style.fontWeight = 'bold'; // 高亮显示正确答案
+						div.style.color = 'green'; // 设置正确答案颜色为绿色
+					}
+					templateChoose.appendChild(div);
+				});
+			}
+			var outputArea1 = document.querySelector('textarea[placeholder="输出文本1"]');
+
+			outputArea1.value = ''; // 清空 outputArea1
+			typeWriter(result.result, 0, outputArea1); // 显示获取的llm的回答
+        });
+
+
+
+
+		function typeWriter(text, index, outputArea) {
+			if (index < text.length) {
+				outputArea.value += text.charAt(index);
+				setTimeout(function() {
+					typeWriter(text, index + 1, outputArea);
+				}, 100); // 调整时间间隔来加快或减慢打字速度
+			}
+		}
+		  </script>
+	</head>
+	<body class="is-preload">
+
+
+	<style>
+			/* 设置页面容器 */
+			.container {
+				max-width: 1200px;
+				width: 100%;
+				padding: 20px;
+				display: flex;
+				justify-content: space-between; /* 左右两列对齐 */
+				flex-wrap: wrap; /* 允许换行，避免在小屏幕时超出边界 */
+			}
+
+			/* 左侧部分，选择评测数据集 */
+			.left-column {
+				flex: 1 1 45%; /* 默认占45%的宽度 */
+				padding-right: 20px; /* 添加右侧间距 */
+			}
+
+			/* 右侧部分，模型输出 */
+			.right-column {
+				flex: 1 1 45%; /* 默认占45%的宽度 */
+				display: flex;
+				flex-direction: column; /* 纵向排列 */
+				align-items: flex-start; /* 左对齐 */
+			}
+
+			/* 右侧模型输出区域 */
+			.right-column h3 {
+				margin-bottom: 10px;
+				margin-top: 40px;
+			}
+
+			/* 调整文本框的样式 */
+			.right-column textarea {
+				width: 100%;
+				max-width: 530px; /* 限制最大宽度 */
+				height: 300px; /* 固定高度 */
+				margin-bottom: 30px;
+				padding: 10px;
+				font-size: 14px;
+				border-radius: 5px;
+				border: 1px solid #ccc;
+				box-sizing: border-box;
+				resize: none;
+			}
+
+			/* 响应式布局：小屏幕时调整列的宽度 */
+			@media (max-width: 1200px) {
+				.left-column, .right-column {
+					flex: 1 1 48%; /* 左右两列占用48%宽度，增加一些间距 */
+				}
+			}
+
+			@media (max-width: 768px) {
+				.container {
+					flex-direction: column; /* 屏幕宽度小于768px时，改为纵向排列 */
+					align-items: stretch; /* 确保容器伸展，左右列会上下排列 */
+				}
+
+				.left-column, .right-column {
+					flex: 1 1 100%; /* 列宽度占满屏幕 */
+					padding-right: 0;
+					padding-left: 0;
+				}
+
+				.right-column textarea {
+					width: 100%;
+					max-width: 100%; /* 确保宽度不会超出容器 */
+				}
+			}
+		</style>
+
+		<!-- <div id="fl">
+			<img src="{{ url_for('static', filename='logo.png') }}" id="logo" style="width: 50px;height: 50px;" alt="logo">
+			<h1 id="page-title">大语言模型安全评测</h1>
+			<button id="change_page_2" onclick="change_page()" style="color: rgb(255, 255, 255)">深度学习模型安全评测</button>
+		</div> -->
+		<header class="navbar navbar-expand-md d-print-none">
+			<div class="container-xl">
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbar-menu" aria-controls="navbar-menu"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+			  <!-- BEGIN NAVBAR LOGO -->
+			<a href="/" class="navbar-brand navbar-brand-autodark me-3">
+			<img src="../static/css/images/logo.png" 
+				 class="navbar-brand-image" 
+				 width="110" 
+				 height="32" 
+				 alt="Logo">
+			</a>
+		  <!-- END NAVBAR LOGO -->
+			  <ul class="navbar-nav">
+				<li class="nav-item">
+				  <a class="nav-link" href="home">
+					<span class="nav-link-icon">
+					  <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+					  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="icon icon-1">
+						<path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+						<path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+						<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+					  </svg>
+					</span>
+					<span class="nav-link-title"> 主页 </span>
+				  </a>
+				</li>
+				<li class="nav-item active">
+				  <a class="nav-link" href="llmindex">
+					<span
+					  class="nav-link-icon"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+					  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="icon icon-1">
+						<path d="M9 11l3 3l8 -8" />
+						<path
+						  d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+					  </svg>
+					</span>
+					<span class="nav-link-title"> 大语言模型安全评测 </span>
+				  </a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="index">
+					<span
+					  class="nav-link-icon"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+					  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="icon icon-1">
+						<path d="M9 11l3 3l8 -8" />
+						<path
+						  d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+					  </svg>
+					</span>
+					<span class="nav-link-title"> 深度学习模型安全评测 </span>
+				  </a>
+				</li>
+			  </ul>
+			  <div class="navbar-nav flex-row order-md-last ms-auto">
+				<div class="nav-item">
+					<!-- 移除 data-bs-toggle 属性，添加 href 链接 -->
+					<a href="login.html" class="nav-link d-flex lh-1 text-reset" aria-label="登录">
+						
+						<div class="d-none d-xl-block ps-2">
+							<div>登录</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			  </div>
+			</div>
+		  </header>
+
+			<!-- <section id="one" class="main style1"> -->
+
+<div class="container">
+    <div class="row gtr-150">
+        <div class="col-6 col-12-medium">
+            <div class="card">
+                <div class="card-body">
+					<!-- 数据集选择 -->
+					<div class="mb-4">
+                        <h3 class="mb-3">选择评测数据集</h3>
+                        <div class="btn-group-vertical w-100" data-bs-toggle="buttons">
+                          <label class="btn btn-outline-primary w-100 text-start">
+                            <input type="radio" name="dataset_choose" id="dataset_choose_0" value="可信测试" class="btn-check" autocomplete="off">
+                            可信测试
+                            <!-- <small class="text-muted d-block">共78条数据</small> -->
+                        </label>
+                            <label class="btn btn-outline-primary w-100 text-start">
+                                <input type="radio" name="dataset_choose" id="dataset_choose_1" value="越狱攻击测试" class="btn-check" autocomplete="off">
+                                红方测试
+                                <!-- <small class="text-muted d-block">共78条数据</small> -->
+                            </label>
+                            <label class="btn btn-outline-primary w-100 text-start">
+                                <input type="radio" name="dataset_choose" id="dataset_choose_2" value="心智测试" class="btn-check" autocomplete="off">
+                                心智测试
+                                <!-- <small class="text-muted d-block">共64条数据</small> -->
+                            </label>
+                            <button type="button" style="border-radius: 8px; font-size: 0.9rem; padding: 1.6rem; letter-spacing: 0; color: #1e1af3;" class="btn btn-outline-primary w-100 text-start" data-bs-toggle="collapse" data-bs-target="#ability-tests" aria-expanded="false" aria-controls="ability-tests" >
+                              能力测试
+                          </button>
+                          
+  
+                          <!-- 能力测试下拉菜单 -->
+                          <div class="collapse" id="ability-tests" style="margin-top: 4px;">
+                              <label class="btn btn-outline-info w-100 text-start">
+                                  <input type="radio" name="dataset_choose" id="dataset_choose_4" value="能力测试-国际法律" class="btn-check" autocomplete="off">
+                                  能力测试-国际法律
+                              </label>
+                              <label class="btn btn-outline-info w-100 text-start">
+                                  <input type="radio" name="dataset_choose" id="dataset_choose_5" value="能力测试-逻辑推理" class="btn-check" autocomplete="off">
+                                  能力测试-逻辑推理
+                              </label>
+                              <label class="btn btn-outline-info w-100 text-start">
+                                  <input type="radio" name="dataset_choose" id="dataset_choose_6" value="能力测试-商业道德" class="btn-check" autocomplete="off">
+                                  能力测试-商业道德
+                              </label>
+                              <label class="btn btn-outline-info w-100 text-start">
+                                  <input type="radio" name="dataset_choose" id="dataset_choose_7" value="能力测试-中国历史" class="btn-check" autocomplete="off">
+                                  能力测试-中国历史
+                              </label>
+                              <label class="btn btn-outline-info w-100 text-start">
+                                  <input type="radio" name="dataset_choose" id="dataset_choose_8" value="能力测试-中国文化" class="btn-check" autocomplete="off">
+                                  能力测试-中国文化
+                              </label>
+                          </div>
+
+
+                        </div>
+                    </div>
+
+					<form method="post" action="/llm_ability_test_international_law">
+                        <!-- 模型选择 -->
+                        <div class="mb-4">
+							<h3 class="mb-3">选择模型</h3>
+							<div class="btn-group w-100" role="group" aria-label="模型选择" data-bs-toggle="buttons">
+								<input type="radio" class="btn-check" name="module_choose" id="module_choose_1" value="Baichuan2-13B" autocomplete="off">
+								<label class="btn btn-outline-success" for="module_choose_1">Baichuan2-13B</label>
+						
+								<input type="radio" class="btn-check" name="module_choose" id="module_choose_2" value="Qwen-7B" autocomplete="off">
+								<label class="btn btn-outline-success" for="module_choose_2">Qwen-7B</label>
+						
+								<input type="radio" class="btn-check" name="module_choose" id="module_choose_3" value="ChatGLM" autocomplete="off">
+								<label class="btn btn-outline-success" for="module_choose_3">ChatGLM</label>
+							</div>
+						</div>
+
+						<!-- 问题选择 -->
+						<div class="mb-4">
+                            <h3 class="h5 mb-2 text-truncate">问题选择</h3>
+                            <select name="prompt_choose" id="prompt_choose" style="margin-bottom: 16px; font-size: 16px">
+                                <option value="引渡的罪名特定原则是指" title="引渡的罪名特定原则是指">引渡的罪名特定原则是指</option>
+								<option value="根据1969年修订的1954年《国际防止海上油污公约》的规定，禁排区是" title="根据1969年修订的1954年《国际防止海上油污公约》的规定，禁排区是">根据1969年修订的1954年《国际防止海上油污公约》的规定，禁排区是</option>
+								<option value="下列各项，属于国际司法基本原则的是" title="下列各项，属于国际司法基本原则的是">下列各项，属于国际司法基本原则的是</option>
+								<option value="在下列各种法律选择方法中，要求直接就国际司法关系所涉及的国家的实体规范作出选择的方法是是" title="在下列各种法律选择方法中，要求直接就国际司法关系所涉及的国家的实体规范作出选择的方法是是">在下列各种法律选择方法中，要求直接就国际司法关系所涉及的国家的实体规范作出选择的方法是</option>
+								<option value="国家区别于其他非国家政治实体的根本要素是"title="国家区别于其他非国家政治实体的根本要素是">国家区别于其他非国家政治实体的根本要素是</option>
+								<option value="用冲突规范调整涉外民事关系，其方法属于"title="用冲突规范调整涉外民事关系，其方法属于">用冲突规范调整涉外民事关系，其方法属于</option>
+								<option value="在物权关系的法律适用上，主张不分动产和不动产一律适用物之所在地法是从"title="在物权关系的法律适用上，主张不分动产和不动产一律适用物之所在地法是从">在物权关系的法律适用上，主张不分动产和不动产一律适用物之所在地法是从</option>
+								<option value="有权依据人大常委决定批准我国同外国缔结的条约和重要协定的是"title="有权依据人大常委决定批准我国同外国缔结的条约和重要协定的是">有权依据人大常委决定批准我国同外国缔结的条约和重要协定的是</option>
+								<option value="WTO调整国际服务贸易的协定是"title="WTO调整国际服务贸易的协定是">WTO调整国际服务贸易的协定是</option>
+								<option value="将票据法编入债务法典内，作为债务法的一部分内容的国家是"title="将票据法编入债务法典内，作为债务法的一部分内容的国家是">将票据法编入债务法典内，作为债务法的一部分内容的国家是</option>
+                            </select>
+                        </div>
+						
+						<!--正确答案-->
+						<div class="mb-4">
+                            <h3 class="h5 mb-2 text-truncate">正确答案</h3>	
+							<div id="template_choose">
+								<script>
+									// 监听第一个下拉框的选择变化
+									document.getElementById('prompt_choose').addEventListener('change', function() {
+										var promptChoice = this.value; // 获取选中的问题类型
+										var templateChoose = document.getElementById('template_choose'); // 获取第二个下拉框
+
+										// 清空第二个下拉框的内容
+										templateChoose.innerHTML = '';
+
+										// 根据选择的类型动态生成选项
+										var options = [];
+										var correctAnswer = ''
+
+										if (promptChoice === '引渡的罪名特定原则是指') {
+											options = [
+												'A 只能根据国际公约规定的特定罪名要求引渡',
+												'B 前南刑事法庭只能审理特定罪名的刑事案件',
+												'C 请求引渡国只能就其请求引渡时的特定罪名对犯罪嫌疑人加以审判和处罚',
+												'D 法院只能审理特定罪名的刑事案件'
+											];
+											correctAnswer = 'C 请求引渡国只能就其请求引渡时的特定罪名对犯罪嫌疑人加以审判和处罚'
+										} else if (promptChoice === "根据1969年修订的1954年《国际防止海上油污公约》的规定，禁排区是") {
+											options = [
+												'A 距海岸50海里以内海域',
+												'B 所有海域',
+												'C 距海岸100海里以内海域',
+												'D 距海岸150海里以内海域'
+											];
+											correctAnswer = 'B 所有海域'
+										} else if (promptChoice === "在下列各种法律选择方法中，要求直接就国际司法关系所涉及的国家的实体规范作出选择的方法是是") {
+											options = [
+												'A 依最密切联系原则决定法律的选择',
+												'B 依法律关系的性质决定法律的选择',
+												'C 依利益分析或依应得的结果决定法律的选择',
+												'D 依当事人意思自治决定法律的选择'
+											];
+											correctAnswer = 'C 依利益分析或依应得的结果决定法律的选择'
+										}
+										else if (promptChoice === '用冲突规范调整涉外民事关系，其方法属于') {
+											options = [
+												'A 直接调整',
+												'B 间接调整',
+												'C 自然调整',
+												'D 混合调整'
+											];
+											correctAnswer = 'B 间接调整'
+										}
+										else if (promptChoice === '将票据法编入债务法典内，作为债务法的一部分内容的国家是') {
+											options = [
+												'A 日本',
+												'B 英国',
+												'C 瑞士',
+												'D 德国'
+											];
+											correctAnswer = 'C 瑞士'
+										}
+										else if (promptChoice === '在物权关系的法律适用上，主张不分动产和不动产一律适用物之所在地法是从') {
+											options = [
+												'A 19世纪开始的',
+												'B 18世纪开始的',
+												'C 13、14世纪开始的',
+												'D 17世纪开始的'
+											];
+											correctAnswer = 'A 19世纪开始的'
+										}
+										else if (promptChoice === '有权依据人大常委决定批准我国同外国缔结的条约和重要协定的是') {
+											options = [
+												'A GATT',
+												'B TRIMs',
+												'C TRIPs',
+												'D GATS'
+											];
+											correctAnswer = 'D GATS'
+										}
+										else if (promptChoice === 'WTO调整国际服务贸易的协定是') {
+											options = [
+												'A 19世纪开始的',
+												'B 18世纪开始的',
+												'C 13、14世纪开始的',
+												'D 17世纪开始的'
+											];
+											correctAnswer = 'A 19世纪开始的'
+										}
+										else if (promptChoice === '下列各项，属于国际司法基本原则的是') {
+											options = [
+												'A 保护弱方当事人合法权益的原则',
+												'B 意思自治原则',
+												'C 最惠国待遇',
+												'D 非歧视原则'
+											];
+											correctAnswer = 'A 保护弱方当事人合法权益的原则'
+										} else if (promptChoice === '国家区别于其他非国家政治实体的根本要素是') {
+											options = [
+												'A 定居的居民',
+												'B 享有主权',
+												'C 确定的领土',
+												'D 政权组织'
+											];
+											correctAnswer = 'B 享有主权'
+										}
+
+										// 将生成的选项添加到第二个下拉框中
+										options.forEach(function(optionText) {
+											var div = document.createElement('div');
+											div.textContent = optionText;
+											if (optionText === correctAnswer) {
+												div.style.fontWeight = 'bold'; // 高亮显示正确答案
+												div.style.color = 'green'; // 设置正确答案颜色为绿色
+											}
+											templateChoose.appendChild(div);
+										});
+									});
+
+									// 初始化时触发一次更新
+									document.getElementById('prompt_choose').dispatchEvent(new Event('change'));
+								</script>
+                            </div>
+                        </div>
+
+						<button type="submit" class="btn btn-primary w-100 btn-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-robot" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M7 7h10a2 2 0 0 1 2 2v1l1 1v3l-1 1v3a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-3l-1 -1v-3l1 -1v-1a2 2 0 0 1 2 -2z" />
+                                <path d="M10 16h4" />
+                                <circle cx="8.5" cy="11.5" r=".5" fill="currentColor" />
+                                <circle cx="15.5" cy="11.5" r=".5" fill="currentColor" />
+                                <path d="M9 7l-1 -4" />
+                                <path d="M15 7l1 -4" />
+                            </svg>
+                            获取模型输出
+                        </button>
+					</form>
+                </div>
+            </div>
+        </div>
+						
+		<div class="col-6 col-12-medium imp-medium">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="mb-3">模型输出：</h3>
+                    <div class="form-floating">
+                        <textarea id="result1" class="form-control" placeholder=" " style="height: 500px" readonly></textarea>
+                        <label for="result1">模型响应内容</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </section> -->
+
+<!-- 保留原有脚本 -->				
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/jquery.scrolly.min.js"></script>
+<script src="static/js/browser.min.js"></script>
+<script src="static/js/breakpoints.min.js"></script>
+<script src="static/js/util.js"></script>
+<script src="static/js/main.js"></script>		
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+			
+<script>
+
+	document.addEventListener('DOMContentLoaded', function() {
+			// 初始化默认选中
+
+	
+			// 绑定数据集切换事件
+			document.querySelectorAll('input[name="dataset_choose"]').forEach(btn => {
+				btn.addEventListener('change', function(e) {
+					const urlMap = {
+						'可信测试': '/llm_believable_test',
+						'越狱攻击测试': '/llmindex',
+						'心智测试': '/llm_mind_test',
+						'能力测试-国际法律': '/llm_ability_test_international_law',
+							  '能力测试-逻辑推理': '/llm_ability_test_logic_reasoning',
+							  '能力测试-商业道德': '/llm_ability_test_business_ethics',
+							  '能力测试-中国历史': '/llm_ability_test_china_history',
+							  '能力测试-中国文化': '/llm_ability_test_china_culture'
+					};
+					window.location.href = urlMap[e.target.value];
+				});
+			});
+	
+			
+			// 动态填充表单数据
+			const result = {{ result|tojson }};
+
+
+			if (result.model) {
+				document.querySelector(`input[value="${result.model}"]`).checked = true;
+				document.getElementById('prompt_choose').value = result.select_prompt;
+				document.getElementById('prompt_choose').dispatchEvent(new Event('change'));
+			}
+	
+			// 初始化输出区域
+			const output1 = document.getElementById('result1');
+			output1.value = '';
+			typeWriter(result.result, 0, output1);
+		});
+	
+		function typeWriter(text, index, output) {
+			if (index < text.length) {
+				output.value += text.charAt(index);
+				setTimeout(() => typeWriter(text, index + 1, output), 50);
+			}
+		}
+		
+		</script>
+
+<style>
+/* 补充样式调整 */
+.btn-group-vertical label.btn {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+
+.btn-check:checked + .btn {
+    background-color: var(--tblr-primary);
+    border-color: var(--tblr-primary);
+    color: white;
+}
+
+.form-select-lg {
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.form-floating textarea {
+    min-height: 500px;
+    font-family: Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+}
+</style>
+
+	</body>
+</html>

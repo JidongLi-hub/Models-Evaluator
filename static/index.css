@@ -1,0 +1,339 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #f0f2f5;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* 头部样式 */
+#fl {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#logo {
+  margin-right: 1.5rem;
+  border-radius: 8px;
+}
+
+#page-title {
+  font-size: 1.8rem;
+  color: #1a73e8;
+  flex-grow: 1;
+}
+
+#change_page {
+  padding: 0.6rem 1.2rem;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#change_page:hover {
+  background: #1557b0;
+}
+
+/* 主容器布局 */
+.top-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  margin-top: 1rem;
+  /* 新增高度限制 */
+  min-height: 560px; /* 原720px */
+  height: 65vh;      /* 新增视口单位 */
+}
+
+.top-center {
+  flex: 1;
+  min-width: 500px;
+  height: 100%;     /* 继承父容器高度 */
+  min-height: 480px;/* 防止内容挤压 */
+}
+
+#ratio-container {
+  height: 100%;
+  width: 100%;
+}
+/* 左侧控制面板 */
+.top-left {
+  flex: 0 0 300px;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.top-left-li {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+label {
+  min-width: 120px;
+  color: #666;
+}
+
+select, input[type="range"] {
+  flex-grow: 1;
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button#tlb1, button#tlb2 {
+  width: 100%;
+  padding: 0.8rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button#tlb1:hover, button#tlb2:hover {
+  background: #218838;
+}
+
+/* 中间区域新样式 */
+#ratio-container {
+  height: 100%;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f1f5ff 100%);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 环形进度容器 */
+.progress-ring {
+  width: 200px;    /* 原240px */
+  height: 200px;   /* 原240px */
+  margin: 12px auto;/* 原20px */
+  position: relative;
+}
+
+/* 环形进度动画 */
+.progress-circle {
+  stroke-dasharray: 628;
+  stroke-dashoffset: 628;
+  animation: progress 2s ease-out forwards;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+@keyframes progress {
+  to { stroke-dashoffset: 0; }
+}
+
+/* 状态指示灯 */
+.status-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.status-dot {
+  width: 16px;
+  height: 16px;
+  background: #4caf50;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  box-shadow: 0 0 12px rgba(76,175,80,0.3);
+}
+
+/* 数据卡片 */
+.metric-card {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-radius: 12px;
+  padding: 12px;   /* 原16px */
+  margin: 10px 0;  /* 原15px */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.metric-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2196f3;
+}
+
+/* 装饰元素 */
+.deco-wave {
+  position: absolute;
+  background: linear-gradient(45deg, #e8f4ff 0%, transparent 100%);
+  border-radius: 50%;
+  opacity: 0.3;
+  width: 240px;    /* 原300px */
+  height: 240px;   /* 原300px */
+  top: -120px;     /* 原-150px */
+  right: -120px;   /* 原-150px */
+}
+
+/* 右侧结果表格 */
+.top-right {
+  flex: 0 0 380px;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#result_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+#result_table th, #result_table td {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+#result_table th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+#result_table tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.value {
+  font-weight: bold;
+  color: #1a73e8;
+}
+
+#report {
+  width: 100%;
+  padding: 0.8rem;
+  background: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#report:hover {
+  background: #138496;
+}
+
+/* 底部流程展示 */
+.bottom-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.box {
+  flex: 1;
+  min-width: 250px;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.picture {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.process {
+  font-weight: 500;
+  color: #666;
+}
+
+/* 加载动画样式 */
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading.active {
+  display: flex;
+}
+
+.girl {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1a73e8;
+  animation: pulse 1.5s infinite;
+}
+
+.boys span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #28a745;
+  border-radius: 50%;
+  margin: 0 4px;
+  animation: bounce 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .top-container {
+    flex-wrap: wrap;
+  }
+  
+  .top-left, .top-right {
+    flex: 1 1 100%;
+    margin-bottom: 2rem;
+  }
+  
+  .bottom-container {
+    flex-direction: column;
+  }
+}
