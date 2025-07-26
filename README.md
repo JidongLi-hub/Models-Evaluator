@@ -1,17 +1,27 @@
-# AI Defender
+# ModelsEvaluator 
 深度学习模型安全评测平台
 
-## 系统和环境要求
-- 系统要求
-  - Windows 10 及以上系统
-- 环境要求
-  - python 3.10
-  - 执行`pip install -rrequirments.txt`安装所需依赖
+## 系统架构
+- 系统使用python Flask框架构建，提供用户数据上传和评测结果显示
+- 使用两台服务器，一台作为访问机，具有公网IP，提供对外的访问服务；另一台服务器作为评测机，负责加载模型并执行评测
 
-## app使用方法
-- 默认评测
-环境配置完毕后，在当前目录，执行`python app.py`。功能主页如下图所示，点击开始测评即可开始工作。评测根据模型大小耗时1-3小时不等。评测过程中可以在后台终端看到进度和输出，最终的各项指标和模型总评会显示在前端界面上。（第一次运行可能会下载样例模型，持续数分钟，属于正常情况）
-![](https://notes.sjtu.edu.cn/uploads/upload_f788302a9e1a17fbb5ae38ac3674eef8.png)
-- 个性化评测
-  项目内置了一个样例模型用来评测，若希望评测自己的模型，则需要在`Source\EvaluationConfig.py`做修改，加载自己的模型结构和参数。
-  ![](https://notes.sjtu.edu.cn/uploads/upload_aa7905a75ba9bb066f686f317b79859d.png) 
+## 启动方法
+1. 在访问机开启一个终端，建立ssh本地端口转发，使用调用评测机的LLM服务
+```bash
+ssh -L 6000:127.0.0.1:5000 ai-defender@47.117.171.217 -p 9530
+```
+输入密码后登录评测机，然后在本终端中远程启动LLM服务，看到5000端口上有服务开启即为成功
+```bash
+conda activate baichuan2
+cd model_service
+python service.py
+```
+2. 在访问机另开启一个终端，启动评测系统
+```bash
+conda activate Defender
+cd Models-Evaluator
+python app.py
+```
+## To Do
+- [ ] 修复页面中存在的bug，使评测功能正常运转
+- [ ] 重构页面，使页面更加美观，包括顶部菜单、页面背景和项目框等
