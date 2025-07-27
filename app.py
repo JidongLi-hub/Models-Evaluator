@@ -7,10 +7,9 @@ import requests
 import re
 
 # 开一个终端，并建立ssh端口转发命令
-# ssh -i "/home/ai-defender/AI-Defender/id_rsa_ai_defender" -L 6000:127.0.0.1:5000 ai-defender@47.117.171.217 -p 9530
-# ssh -i "/home/unicorn/.ssh/id_rsa_ai_defender" -L 6000:127.0.0.1:5000 ai-defender@47.117.171.217 -p 9530
+# ssh -L 6000:127.0.0.1:5000 duansf@202.120.39.107 -p 1022
 # llm服务器的本地转发地址
-SECOND_SERVER_URL = "http://127.0.0.1:5000"
+SECOND_SERVER_URL = "http://127.0.0.1:6000"
 
 def wait():
     time.sleep(150)

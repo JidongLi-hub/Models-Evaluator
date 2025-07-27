@@ -175,32 +175,25 @@
     </div>
     <div class="top-center">
       <div id="ratio-container">
-        <!-- 波浪装饰 -->
-        <div class="deco-wave"></div>
         
         <!-- 环形进度 -->
-        <div class="progress-ring">
+        <div class="progress-ring-container">
           <svg width="240" height="240">
-            <circle cx="120" cy="120" r="110" fill="none" stroke="#eee" stroke-width="8"/>
-            <circle class="progress-circle" cx="120" cy="120" r="110" fill="none" 
+            <circle class="progress-bg" cx="120" cy="120" r="110" fill="none" stroke="#eff2f5" stroke-width="8"/>
+            <circle class="progress-circle" cx="120" cy="120" r="110" fill="none"
                     stroke="#2196f3" stroke-width="8" stroke-linecap="round"/>
           </svg>
-          <div class="status-indicator">
-            <div class="status-dot"></div>
-            <div class="metric-value">85%</div>
-            <div class="metric-label">检测进度</div>
-          </div>
-        </div>
-    
+          <div id="progress-text">0%</div>
+        </div>        
         <!-- 实时指标 -->
         <div class="metric-card">
           <span class="metric-label">当前耗时</span>
-          <span class="metric-value">2m 36s</span>
+          <span class="metric-value" id="elapsed-time">0s</span>
         </div>
-        
+      
         <div class="metric-card">
           <span class="metric-label">资源占用</span>
-          <span class="metric-value">32%</span>
+          <span class="metric-value" id="resource-usage">--%</span>
         </div>
       </div>
     </div>
@@ -318,4 +311,21 @@
   </div>
 
 </body>
+<script>
+
+// 保证页面一加载时就是 0%
+document.addEventListener("DOMContentLoaded", () => {
+  const circle = document.querySelector('.progress-circle');
+  const text = document.getElementById('progress-text');
+  const radius = 110;
+  const circumference = 2 * Math.PI * radius;
+
+  circle.style.strokeDasharray = circumference;
+  circle.style.strokeDashoffset = circumference;
+  text.textContent = "0%";
+
+  document.getElementById("elapsed-time").textContent = "0s";
+  document.getElementById("resource-usage").textContent = "--%";
+});
+</script>
 </html>

@@ -65,6 +65,7 @@ body {
 }
 
 #ratio-container {
+  text-align: center;
   height: 100%;
   width: 100%;
 }
@@ -96,7 +97,18 @@ select, input[type="range"] {
   border-radius: 4px;
 }
 
-button#tlb1, button#tlb2 {
+button#tlb1 {
+  width: 50%;
+  padding: 0.8rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button#tlb2 {
   width: 100%;
   padding: 0.8rem;
   background: #28a745;
@@ -130,13 +142,59 @@ button#tlb1:hover, button#tlb2:hover {
 }
 
 /* 环形进度动画 */
+.progress-ring-container {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: inline-block;
+}
+
+.progress-ring-container svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  color: #2196f3;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
 .progress-circle {
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.metric-card {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #333;
+}
+
+.metric-label {
+  display: inline-block;
+  width: 80px;
+  font-weight: bold;
+}
+
+.metric-value {
+  color: #2196f3;
+  font-weight: bold;
+}
+
+/* .progress-circle {
   stroke-dasharray: 628;
   stroke-dashoffset: 628;
   animation: progress 2s ease-out forwards;
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
-}
+} */
 
 @keyframes progress {
   to { stroke-dashoffset: 0; }
@@ -162,6 +220,7 @@ button#tlb1:hover, button#tlb2:hover {
 
 /* 数据卡片 */
 .metric-card {
+  margin-bottom: 20%;
   display: flex;
   justify-content: space-between;
   background: white;

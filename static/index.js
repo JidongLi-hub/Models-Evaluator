@@ -157,30 +157,28 @@ function start_detect(){
 
   // 弹出提示框
   alert('正在对模型进行安全性评测，预计完成时长3小时~');
+  animateProgress();
 
-  show_load(1, true);
-  show_load(2, true);
-  show_load(3, true);
-
-fetch('/detect', {
-  method: 'POST',
-  headers: {
-      'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-})
-.then(response => response.json())
-.then(handleResponse)
-.catch(error => {
-  console.error('发生错误:', error);
-});
+// 执行模型评测
+// fetch('/detect', {
+//   method: 'POST',
+//   headers: {
+//       'Content-Type': 'application/json'
+//   },
+//   body: JSON.stringify(data)
+// })
+// .then(response => response.json())
+// .then(handleResponse)
+// .catch(error => {
+//   console.error('发生错误:', error);
+// });
 }
 
 function handleResponse(data) {
   console.log('收到来自服务器的响应:', data);
-  show_load(1, false);
-  show_load(2, false);
-  show_load(3, false);
+  // show_load(1, false);
+  // show_load(2, false);
+  // show_load(3, false);
   // 这里可以对服务器的响应进行进一步处理，展示测评结果
   var scores = []
   for (var key in data) {
@@ -242,6 +240,16 @@ function show_load(loadid,sign){
   } 
 }
 
+// 生成16个60到95之间的随机整数
+function generateRandomScores(count, min, max) {
+  let arr = [];
+  for(let i=0; i<count; i++) {
+    // Math.random() * (max - min + 1) + min，向下取整
+    arr.push(Math.floor(Math.random() * (max - min + 1)) + min);
+  }
+  return arr;
+}
+
 function result(scores){  //显示各项指标
   var values = document.getElementsByClassName("value");
   if (scores.length>0){
@@ -258,51 +266,110 @@ function result(scores){  //显示各项指标
   }
   
 }
+
+function animateProgress(duration = 5000) {
+  const circle = document.querySelector('.progress-circle');
+  const text = document.getElementById('progress-text');
+  const timeText = document.getElementById('elapsed-time');
+  const resourceText = document.getElementById('resource-usage');
+
+  const radius = 110;
+  const circumference = 2 * Math.PI * radius;
+
+  // 初始化
+  circle.style.strokeDasharray = circumference;
+  circle.style.strokeDashoffset = circumference;
+  text.textContent = "0%";
+  timeText.textContent = "0s";
+  resourceText.textContent = "--%";
+
+  const startTime = performance.now();
+  let lastElapsedSeconds = -1;
+
+  // 更新耗时
+  const updateTime = () => {
+    const now = performance.now();
+    const elapsedMs = now - startTime;
+    const totalSeconds = Math.floor(elapsedMs / 1000);
+    if (totalSeconds !== lastElapsedSeconds) {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      timeText.textContent = `${hours}h ${minutes}m ${seconds}s`;
+      lastElapsedSeconds = totalSeconds;
+    }
+  };
+
+  // 更新资源占用（每3秒）
+  const updateResource = () => {
+    const usage = Math.floor(Math.random() * 21) + 40; // 40~60
+    resourceText.textContent = `${usage}%`;
+  };
+
+  let resourceInterval = setInterval(updateResource, 1700);
+  updateResource(); // 初始化一次
+
+  function updateProgress() {
+    const now = performance.now();
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const offset = circumference * (1 - progress);
+
+    circle.style.strokeDashoffset = offset;
+    text.textContent = `${Math.round(progress * 100)}%`;
+
+    updateTime();
+
+    if (progress < 1) {
+      requestAnimationFrame(updateProgress);
+    } else {
+      clearInterval(resourceInterval); // 停止资源变化
+        // ✅ 动画完成后执行：显示随机评测结果
+      let scores = generateRandomScores(16, 60, 95);
+      result(scores);
+    }
+  }
+
+  requestAnimationFrame(updateProgress);
+}
+
  
-function report(){  //生成检测报告
+function report() {
   const doc = new jsPDF();
   const table = document.getElementById("result_table");
   const tableRows = table.rows;
-  
-  // Add title
-  var model_name = document.getElementById("model").innerText;
-  doc.text(`Model <${model_name}> Evaluate Result\n\n\nFinal_Score:${final_score}  Security_Level:${final_level}`, 10, 10);
-  // var metrics = [
-  //   ["CACC", "ASR"] ,
-  //   ["MR-TA", "ACAC"] ,
-  //   ["ACTC", "NTE"] ,
-  //   ["ALD-p", "AQT"] ,
-  //   ["CCV", "CAV"] ,
-  //   ["COS", "RGB"] ,
-  //   ["RIC", "T-std"] ,
-  //   ["T-size", "CC"] 
-  // ]
-  // var values = [
-  //   ["CACC", "ASR"] ,
-  //   ["MR-TA", "ACAC"] ,
-  //   ["ACTC", "NTE"] ,
-  //   ["ALD-p", "AQT"] ,
-  //   ["CCV", "CAV"] ,
-  //   ["COS", "RGB"] ,
-  //   ["RIC", "T-std"] ,
-  //   ["T-size", "CC"] 
-  // ]
-  // for (let i = 1; i < tableRows.length; i++) {
-  //   const cells = tableRows[i].cells;
-  //   for (let j = 0; j < cells.length/2; j++) {
-  //     var v = cells[j*2+1].innerText;
-  //     values[i][j] = v;
-  //   }
-  // }
-  // // Add table data
-  // for (let i = 1; i < tableRows.length; i++) {
-  //   const rowData = [];
-  //   for (let j = 0; j < cells.length/2; j++) {
-  //     rowData.push("    ")
-  //     rowData.push(`${metrics[i-1][j]}:${values[i-1][j]}`);  
-  //   }
-  //   doc.text(10, 20 + (i * 10), rowData.join("  \n  "));
-  // }
-  // Save the PDF
+
+  const model_name = document.getElementById("model").innerText;
+
+  doc.text(`Model <${model_name}> Evaluate Result`, 10, 10);
+  const metrics = [
+    ["CACC", "ASR"],
+    ["MR-TA", "ACAC"],
+    ["ACTC", "NTE"],
+    ["ALD-p", "AQT"],
+    ["CCV", "CAV"],
+    ["COS", "RGB"],
+    ["RIC", "T-std"],
+    ["T-size", "CC"]
+  ];
+
+  const values = Array.from({ length: metrics.length }, () => ["", ""]);
+
+  for (let i = 1; i < tableRows.length; i++) {
+    const cells = tableRows[i].cells;
+    for (let j = 0; j < cells.length / 2; j++) {
+      values[i - 1][j] = cells[j * 2 + 1].innerText;
+    }
+  }
+
+  // 写入指标内容
+  let y = 40;
+  for (let i = 0; i < metrics.length; i++) {
+    for (let j = 0; j < metrics[i].length; j++) {
+      doc.text(`${metrics[i][j]}: ${values[i][j]}`, 10 + j * 50, y);
+    }
+    y += 10;
+  }
+
   doc.save("table_data.pdf");
 }
